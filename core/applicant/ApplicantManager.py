@@ -10,9 +10,9 @@ class ApplicantManager(BaseUserManager):
         applicant.save()
         return applicant
 
-    # def create_superuser(self, email, name, password, **kwargs):
-    #     user = self.create_user(email, name,  password, **kwargs)
-    #     user.is_superuser = True
-    #     user.is_staff = True
-    #     user.save()
-    #     return user
+    def create_superuser(self, index_number, year, **kwargs):
+        user = self.create_user(index_number=index_number password=year, **kwargs)
+        user.is_superuser = True
+        user.is_staff = True
+        user.save()
+        return user

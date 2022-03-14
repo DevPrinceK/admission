@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser
 
 from .ApplicantManager import ApplicantManager
+from core.utils.constants import (Programs, AdmissionStatus)
 
 
 class Bio(models.Model):
@@ -46,8 +47,13 @@ class Applicant(AbstractBaseUser, PermissionsMixin):
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    is_customer = models.BooleanField(default=False)
-    is_labourer = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
+    is_admitted = models.BooleanField(default=False)
+    admission_status = models.CharField(
+        max_length=255, default=AdmissionStatus.PENDING.value)
+    program_admitted_into = models.CharField(
+        max_length=255, null=True, blank=True)
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
