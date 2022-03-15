@@ -45,9 +45,6 @@
                                     <th scope="col">
                                         <h5>Fullname</h5>
                                     </th>
-                                    <!-- <th scope="col">
-                                        <h5>Age</h5>
-                                    </th> -->
                                     <th scope="col">
                                         <h5>Sex</h5>
                                     </th>
@@ -74,39 +71,32 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% if students %}
+                                {% for student in students %}
                                 <tr>
                                     <th scope="row">
-                                        1
+                                        {{forloop.counter}}
                                     </th>
 
                                     <td>
-                                        Prine Kyeremanteng Samuel
-                                    </td>
-                                    <!-- <td>
-                                        24
-                                    </td> -->
-                                    <td>
-                                        M
+                                        {{student.get_fullname}}
                                     </td>
                                     <td>
-                                        0558366133
+                                        {{student.gender}}
                                     </td>
                                     <td>
-                                        prince@gmail.com
+                                        {{student.phone}}
                                     </td>
                                     <td>
-                                        {% comment %}
-                                        {% if business.approval_status == 'pending' %}
-                                        <a href="javascript:void(0)" class="btn btn-warning btn-sm">Pending</a>
-                                        {% elif business.approval_status == 'approved' %}
-                                        <a href="javascript:void(0)" class="btn btn-success btn-sm">Approved</a>
-                                        {% elif business.approval_status == 'rejected' %}
-                                        <a href="javascript:void(0)" class="btn btn-danger btn-sm">Rejected</a>
+                                        {{student.email}}
+                                    </td>
+                                    <td>
+                                        {% if student.is_admitted %}
+                                        <a href="javascript:void(0)" class="btn btn-success btn-sm">Admitted</a>
                                         {% endif %}
-                                        {% endcomment %}
-                                        <a href="javascript:void(0)" class="btn btn-warning btn-sm">Pending</a>
                                     </td>
                                     <td>
+                                        {% if student.transaction %}
                                         <a href="javascript:void(0)" class="btn btn-success btn-sm">Successful</a>
                                     </td>
                                     <td>
@@ -117,25 +107,17 @@
                                             <a href="" class="btn btn-sm btn-primary btn-sm m-1">View</a>
                                             <a href="" class="btn btn-success btn-sm m-1">Edit</a>
                                             <a href="" class="btn btn-danger btn-sm m-1">Delete</a>
-                                            <!-- <div class="col-4 mx-0 py-0">
-                                                <a href="" class="btn btn-sm btn-primary btn-sm">View</a>
-                                            </div>
-
-                                            <div class="col-4 mx-0 py-0">
-                                                <a href="" class="btn btn-success btn-sm">Edit</a>
-                                            </div>
-
-                                            <form action="" method="POST" class="col-4 mx-0 py-0 requires-confirmation"
-                                                data-message="This action is irreversible. Click OK to permanently delete {{student.fullname}}.">
-                                                {% csrf_token %}
-                                                <input type="hidden" value="{{student.id}}" name="student.index_number">
-                                                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
-                                            </form> -->
-
                                         </div>
                                     </td>
                                 </tr>
-
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="8" class="text-center">
+                                        <h5>No Admitted Students</h5>
+                                    </td>
+                                </tr>
+                                {% endif %}
                             </tbody>
                         </table>
                     </div>

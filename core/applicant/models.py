@@ -44,7 +44,7 @@ class Bio(models.Model):
 class Applicant(AbstractBaseUser, PermissionsMixin):
     index_number = models.CharField(max_length=15, unique=True)
     bio = models.OneToOneField(Bio, on_delete=models.CASCADE)
-
+    # transaction = models.ManyToManyField('Transaction', blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -65,3 +65,22 @@ class Applicant(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.index_number
+
+
+class Transaction(models.Model):
+
+    transaction_id = models.CharField(max_length=25, unique=True)
+    applicant = models.ForeignKey(
+        Applicant, on_delete=models.CASCADE, related_name='payer')
+    amount = models.IntegerField(default=0)
+    network = models.CharField(max_length=15)
+    note = models.CharField(max_length=255, null=True, blank=True)
+    phone = models.CharField(max_length=15)
+    status_code = models.CharField(max_length=5)
+    status_message = models.CharField(max_length=255)
+
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.transaction_id

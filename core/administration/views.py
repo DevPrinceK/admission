@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
-from applicant.models import Applicant
+from applicant.models import Applicant, Transaction
 from core.utils.constants import AdmissionStatus
 
 
@@ -54,7 +54,9 @@ class AdmittedStudentView(View):
     template_name = "administration/admitted.html"
 
     def get(self, request, *args, **kwargs):
-        context = {}
+        students = Applicant.objects.filter(
+            is_admitted=True, admission_status=AdmissionStatus.APPROVED.value)
+        context = {'students': students}
         return render(request, self.template_name, context)
 
 
@@ -72,3 +74,42 @@ class StudentDetailView(View):
     def get(self, request, *args, **kwargs):
         context = {}
         return render(request, self.template_name, context)
+
+
+class TransactionsView(View):
+    template_name = 'administration/transactions.html'
+
+    def get(self, request, *args, **kwargs):
+        transactions = Transaction.objects.all().order_by('-transaction_id')
+        context = {'transactions': transactions}
+        return render(request, self.template_name, context)
+
+
+class RegisterAdminUserView(View):
+    template_name = 'administration/register_admin.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        index_number = request.POST.get('index_number')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        # if index_number already exists
+        if Applicant.objects.filter(index_number=index_number).exists():
+            messages.error(
+                request, f'Index number {index_number} already exists')
+            return redirect('administration:register_admin')
+        #  if password and confirmatin password do not match
+        if password != confirm_password:
+            messages.error(
+                request, 'Password and Confirm Password do not match')
+            return redirect('administration:register_admin')
+
+        user = Applicant.objects.create_superuser(
+            index_number=index_number, password=password)
+        user.save()
+        messages.success(request, f'User {index_number} created successfully')
+        return redirect('administration:register_admin')
