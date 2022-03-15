@@ -58,9 +58,6 @@
                                     <th scope="col">
                                         <h5>Admission Status</h5>
                                     </th>
-                                    <th scope="col">
-                                        <h5>Payment</h5>
-                                    </th>
                                     <th>
                                         <h5>Programme</h5>
                                     </th>
@@ -93,11 +90,9 @@
                                     <td>
                                         {% if student.is_admitted %}
                                         <a href="javascript:void(0)" class="btn btn-success btn-sm">Admitted</a>
+                                        {% else %}
+                                        <a href="javascript:void(0)" class="btn btn-danger btn-sm">Pending</a>
                                         {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if student.transaction %}
-                                        <a href="javascript:void(0)" class="btn btn-success btn-sm">Successful</a>
                                     </td>
                                     <td>
                                         General Arts
@@ -121,7 +116,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <!-- end of user list table -->
+                    <!-- end of admitted student list table -->
                 </div>
             </div>
 

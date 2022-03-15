@@ -12,9 +12,10 @@ class ApplicantManager(BaseUserManager):
         return applicant
 
     def create_superuser(self, index_number, password, **kwargs):
-        user = self.create_user(index_number=index_number,
-                                password=password, **kwargs)
+        user = self.create_applicant(index_number=index_number,
+                                     password=password, **kwargs)
         user.is_superuser = True
         user.is_staff = True
+        user.is_applicant = False
         user.save()
         return user

@@ -43,10 +43,11 @@ class Bio(models.Model):
 
 class Applicant(AbstractBaseUser, PermissionsMixin):
     index_number = models.CharField(max_length=15, unique=True)
-    bio = models.OneToOneField(Bio, on_delete=models.CASCADE)
+    bio = models.OneToOneField(Bio, on_delete=models.CASCADE, null=True)
     # transaction = models.ManyToManyField('Transaction', blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_applicant = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
 
     is_admitted = models.BooleanField(default=False)

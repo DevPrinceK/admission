@@ -70,9 +70,9 @@
                                     <th scope="col">
                                         <h5>Admission Status</h5>
                                     </th>
-                                    <th scope="col">
+                                    <!-- <th scope="col">
                                         <h5>Payment</h5>
-                                    </th>
+                                    </th> -->
                                     <th>
                                         <h5>Programme</h5>
                                     </th>
@@ -83,40 +83,39 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% if applicants %}
+                                {% for student in applicants %}
                                 <tr>
                                     <th scope="row">
-                                        1
+                                        {{forloop.counter}}
                                     </th>
 
                                     <td>
-                                        Prine Kyeremanteng Samuel
+                                        {{student.get_fullname}}
                                     </td>
                                     <td>
-                                        M
+                                        {{student.gender}}
                                     </td>
                                     <td>
-                                        0558366133
+                                        {{student.phone}}
                                     </td>
                                     <td>
-                                        prince@gmail.com
+                                        {{student.email}}
                                     </td>
                                     <td>
-                                        {% comment %}
-                                        {% if business.approval_status == 'pending' %}
-                                        <a href="javascript:void(0)" class="btn btn-warning btn-sm">Pending</a>
-                                        {% elif business.approval_status == 'approved' %}
-                                        <a href="javascript:void(0)" class="btn btn-success btn-sm">Approved</a>
-                                        {% elif business.approval_status == 'rejected' %}
-                                        <a href="javascript:void(0)" class="btn btn-danger btn-sm">Rejected</a>
+                                        {% if student.is_admitted %}
+                                        <a href="javascript:void(0)" class="btn btn-success btn-sm">Admitted</a>
+                                        {% else %}
+                                        <a href="javascript:void(0)" class="btn btn-danger btn-sm">Pending</a>
                                         {% endif %}
-                                        {% endcomment %}
-                                        <a href="javascript:void(0)" class="btn btn-warning btn-sm">Pending</a>
                                     </td>
                                     <td>
-                                        <a href="javascript:void(0)" class="btn btn-success btn-sm">Successful</a>
-                                    </td>
-                                    <td>
-                                        General Arts
+                                        {% if student.is_admitted %}
+                                        {{student.program_admitted_into}}
+                                        {% else %}
+                                        {{student.first_choice}}
+                                        {{student.second_choice}}
+                                        {% endif %}
                                     </td>
                                     <td>
                                         <div class="d-flex flex-row justify-content-center">
@@ -126,11 +125,18 @@
                                         </div>
                                     </td>
                                 </tr>
-
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="8" class="text-center">
+                                        <h5>No Applicant Found!</h5>
+                                    </td>
+                                </tr>
+                                {% endif %}
                             </tbody>
                         </table>
                     </div>
-                    <!-- end of user list table -->
+                    <!-- end of applicant list table -->
                 </div>
             </div>
 

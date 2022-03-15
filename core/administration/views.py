@@ -64,7 +64,9 @@ class ApplicantListView(View):
     template_name = "administration/applicants.html"
 
     def get(self, request, *args, **kwargs):
-        context = {}
+        applicants = Applicant.objects.filter(
+            is_applicant=True).order_by('-date_created')
+        context = {'applicants': applicants}
         return render(request, self.template_name, context)
 
 
