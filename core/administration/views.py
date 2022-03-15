@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
@@ -9,7 +10,52 @@ class DashboardView(View):
     template_name = 'administration/dashboard.html'
 
     def get(self, request):
-        context = {}
+        total_applicants = Applicant.objects.filter(is_applicant=True).count()
+        total_transactions = Transaction.objects.count()
+        total_administrators = Applicant.objects.filter(
+            is_staff=True, is_superuser=True).count()
+
+        total_admitted = Applicant.objects.filter(
+            is_applicant=True, is_admitted=True,
+            admission_status=AdmissionStatus.APPROVED.value).count()
+        total_rejected = Applicant.objects.filter(
+            is_applicant=True,
+            admission_status=AdmissionStatus.REJECTED.value).count()
+        total_pending = Applicant.objects.filter(
+            is_applicant=True, admission_status=AdmissionStatus.PENDING.value).count()
+
+        percentage_rejected = '0.00 %' if total_applicants == 0 else str(
+            (total_rejected / total_applicants) * 100) + ' %'
+
+        percentage_pending = '0.00 %' if total_applicants == 0 else str(
+            (total_pending / total_applicants) * 100) + ' %'
+
+        applicants_this_week = Applicant.objects.filter(is_applicant=True,
+                                                        date_created__gte=datetime.now() - timedelta(days=7)).count()
+        admitted_this_week = Applicant.objects.filter(
+            admission_status=AdmissionStatus.APPROVED.value,
+            date_admitted__gte=datetime.now() - timedelta(days=7)).count()
+
+        percentage_admitted_this_week = '0.00 %' if applicants_this_week == 0 else str(
+            (admitted_this_week / applicants_this_week) * 100) + ' %'
+
+        percentage_of_applicants_this_week = '0.00 %' if total_applicants == 0 else str(
+            (applicants_this_week / total_applicants) * 100) + ' %'
+
+        context = {
+            'total_applicants': total_applicants,
+            'total_transactions': total_transactions,
+            'total_administrators': total_administrators,
+            'total_admitted': total_admitted,
+            'total_rejected': total_rejected,
+            'total_pending': total_pending,
+            'percentage_rejected': percentage_rejected,
+            'applicants_this_week': applicants_this_week,
+            'admitted_this_week': admitted_this_week,
+            'percentage_pending': percentage_pending,
+            'percentage_admitted_this_week': percentage_admitted_this_week,
+            'percentage_of_applicants_this_week': percentage_of_applicants_this_week,
+        }
         return render(request, self.template_name, context)
 
 

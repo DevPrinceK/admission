@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser
 
@@ -44,7 +45,6 @@ class Bio(models.Model):
 class Applicant(AbstractBaseUser, PermissionsMixin):
     index_number = models.CharField(max_length=15, unique=True)
     bio = models.OneToOneField(Bio, on_delete=models.CASCADE, null=True)
-    # transaction = models.ManyToManyField('Transaction', blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_applicant = models.BooleanField(default=True)
@@ -56,7 +56,10 @@ class Applicant(AbstractBaseUser, PermissionsMixin):
     program_admitted_into = models.CharField(
         max_length=255, null=True, blank=True)
 
+    number_of_visits = models.IntegerField(default=0)
+
     date_created = models.DateTimeField(auto_now_add=True)
+    date_admitted = models.DateTimeField(null=True, blank=True)
     date_modified = models.DateTimeField(auto_now=True)
 
     objects = ApplicantManager()
