@@ -1,4 +1,4 @@
-{% extends 'applicant/accounts_base.html' %}
+{% extends 'accounts/base.html' %}
 {% block pagetitle %} Login {% endblock %}
 {% load static %}
 {% block content %}
@@ -17,7 +17,7 @@
         {% endfor %}
         {% endif %}
         <h2>Welcome back!</h2>
-        <h5 class="fw-semibold mb-4">Enter Index number and year of completion</h5>
+        <h5 class="fw-semibold mb-4">Enter Index Number and Password</h5>
         <form action="" method="POST">
             {% csrf_token %}
             <div class="form-group">
@@ -26,8 +26,8 @@
                     type="text" value="{{index_number}}" required>
             </div>
             <div class="form-group">
-                <label for="password">Year of Completion</label>
-                <input class="form-control" id="password" name="password" placeholder="Eg. 2013" type="password"
+                <label for="password">Password</label>
+                <input class="form-control" id="password" name="password" placeholder="Enter Password" type="password"
                     required>
             </div>
             <button class="btn btn-main-primary btn-block" type="submit">Login</button>
@@ -35,7 +35,7 @@
         </form>
         <div class="main-signin-footer mt-5">
             <!-- <p><a href="">Forgot password?</a></p> -->
-            <p>First time accessing platform? <a href="{% url 'applicant:sign_up' %}">Register</a></p>
+            <p>First time accessing platform? <a href="{% url 'accounts:sign_up' %}">Register</a></p>
         </div>
     </div>
 </div>

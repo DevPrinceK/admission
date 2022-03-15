@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser
 
-from .ApplicantManager import ApplicantManager
+from accounts.ApplicantManager import ApplicantManager
 from core.utils.constants import (Programs, AdmissionStatus)
 
 
@@ -26,6 +26,7 @@ class Bio(models.Model):
     second_choice = models.CharField(max_length=255)
 
     jhs = models.CharField(max_length=255)
+    year_of_completion = models.DateField()
     bece_aggregate = models.IntegerField(default=0)
     bece_results = models.FileField(
         upload_to='bece_results', null=True, blank=True)
@@ -42,7 +43,6 @@ class Bio(models.Model):
 
 class Applicant(AbstractBaseUser, PermissionsMixin):
     index_number = models.CharField(max_length=15, unique=True)
-    year = models.DateField()
     bio = models.OneToOneField(Bio, on_delete=models.CASCADE)
 
     is_active = models.BooleanField(default=True)
@@ -61,7 +61,7 @@ class Applicant(AbstractBaseUser, PermissionsMixin):
     objects = ApplicantManager()
 
     USERNAME_FIELD = 'index_number'
-    REQUIRED_FIELDS = ['year']
+    # REQUIRED_FIELDS = ['year']
 
     def __str__(self):
         return self.index_number
