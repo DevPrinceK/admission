@@ -1,0 +1,141 @@
+{% extends 'administration/base.html' %}
+{% block pagetitle %} Student Detail {% endblock %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="col-12 mx-auto">
+        <!-- breadcrumb -->
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Admissions</a></li>
+                    <li class="breadcrumb-item"><a href="#">Student</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Details</li>
+                </ol>
+            </nav>
+        </div>
+        <!-- end of breadcrumb -->
+
+        <div class="col-md-12 col-lg-12 col-xl-10 card shadow mx-auto mt-2">
+            <div class="card-body">
+                <!-- search form -->
+                <form action="">
+                    <div class="row">
+                        <div class="col-10">
+                            <input type="text" class="form-control" name="search_user" id="search_user"
+                                placeholder="Username, Fullname, Phone etc...">
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+                <!-- end of search form -->
+            </div>
+        </div>
+
+        <!-- <h4 class="col-md-12 col-lg-12 col-xl-10 mx-auto">Submitted Business Details</h4> -->
+
+        <div class="col-md-12 col-lg-12 col-xl-10 card shadow mx-auto mt-2">
+            <div class="card-body">
+                <!-- business details content -->
+                <div class="row">
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Index Number</p>
+                        <p class="text-muted">10841385</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Firstname</p>
+                        <p class="text-muted">Prince</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Lastname</p>
+                        <p class="text-muted">Kyeremanteng</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Fullname</p>
+                        <p class="text-muted">Prince Kyeremanteng</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Age</p>
+                        <p class="text-muted">24</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Mother's name</p>
+                        <p class="text-muted">Theresa Dansoah</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Father's name</p>
+                        <p class="text-muted">Bright Obeng</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Guardian</p>
+                        <p class="text-muted">Bright Obeng</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Town</p>
+                        <p class="text-muted">Tapa Amanfrom</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Address</p>
+                        <p class="text-muted">Tapa Amanfrom, Biakoye Districk, Oti Region, Ghana.</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">JHS</p>
+                        <p class="text-muted">Tapa Amanfrom D/A JHS</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Year Completed</p>
+                        <p class="text-muted">2013</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Total Aggregate</p>
+                        <p class="text-muted">27</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Programmes of Choice</p>
+                        <p class="text-muted">General Arts</p>
+                        <p class="text-muted">Business</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Programme Given</p>
+                        <p class="btn btn-info btn-sm">General Arts</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Payment Status</p>
+                        {% comment %}
+                        {% if business.approval_status == 'pending' %}
+                        <p class="btn btn-warning btn-sm">Pending</p>
+                        {% elif business.approval_status == 'approved' %}
+                        <p class="btn btn-success btn-sm">Approved</p>
+                        {% elif business.approval_status == 'rejected' %}
+                        <p class="btn btn-danger btn-sm">Rejected</p>
+                        {% endif %}
+                        {% endcomment %}
+                        <p class="btn btn-success btn-sm">Successful</p>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Admission Status</p>
+                        {% comment %}
+                        {% if business.approval_status == 'pending' %}
+                        <p class="btn btn-warning btn-sm">Pending</p>
+                        {% elif business.approval_status == 'approved' %}
+                        <p class="btn btn-success btn-sm">Approved</p>
+                        {% elif business.approval_status == 'rejected' %}
+                        <p class="btn btn-danger btn-sm">Rejected</p>
+                        {% endif %}
+                        {% endcomment %}
+                        <p class="btn btn-warning btn-sm">Pending</p>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4 col-xl-3">
+                        <p class="card-text">Last Updated At</p>
+                        <p class="text-muted">5th Feb 2022</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

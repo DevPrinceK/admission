@@ -167,8 +167,7 @@
                                 </div>
                                 <a class="dropdown-item" href=""><i class="bx bx-user-circle"></i>Change Password</a>
                                 <a class="dropdown-item" href=""><i class="bx bx-cog"></i> Edit Profile</a>
-                                <a class="dropdown-item" href="{% url 'accounts:logout' %}"><i
-                                        class="bx bx-log-out"></i> Logout</a>
+                                <a class="dropdown-item" href=""><i class="bx bx-log-out"></i> Logout</a>
                             </div>
                         </li>
 
@@ -356,18 +355,15 @@
                                 <ul class="sub-menu">
                                     <li aria-haspopup="true"><a href="}" class="slide-item">Transactions</a>
                                     </li>
-                                    <li aria-haspopup="true"><a href="" class="slide-item">Make Payment</a></li>
                                 </ul>
                             </li>
                             <li aria-haspopup="true"><a href="#" class="sub-icon">
-                                    <i class="fa fa-book"></i> Services<i
+                                    <i class="fa fa-book"></i> Resource<i
                                         class="fe fe-chevron-down horizontal-icon"></i></a>
                                 <ul class="sub-menu">
-                                    <li aria-haspopup="true"><a href="" class="slide-item">Today</a>
+                                    <li aria-haspopup="true"><a href="" class="slide-item">Brochure</a>
                                     </li>
-                                    <li aria-haspopup="true"><a href="" class="slide-item">This Week</a>
-                                    </li>
-                                    <li aria-haspopup="true"><a href="" class="slide-item">This Month</a>
+                                    <li aria-haspopup="true"><a href="" class="slide-item">Prospectus</a>
                                     </li>
 
                                 </ul>
@@ -375,17 +371,16 @@
 
                             <li aria-haspopup="true">
                                 <a href="#" class="sub-icon"> <i class="fe fe-users"></i>
-                                    Accounts <i class="fe fe-chevron-down horizontal-icon"></i>
+                                    Admissions <i class="fe fe-chevron-down horizontal-icon"></i>
                                 </a>
                                 <ul class="sub-menu">
-                                    <li aria-haspopup="true"><a href="" class="slide-item">Customers</a>
+                                    <li aria-haspopup="true"><a href="{% url 'administration:admitted' %}"
+                                            class="slide-item">Admitted</a>
                                     </li>
-                                    <li aria-haspopup="true"><a href="" class="slide-item">Approved Labourers</a>
-                                    </li>
-                                    <li aria-haspopup="true"><a href="" class="slide-item">Unapproved Labourers</a>
+                                    <li aria-haspopup="true"><a href="{% url 'administration:applicants' %}"
+                                            class="slide-item">Applicants</a>
                                     </li>
                                 </ul>
-
                             </li>
                         </ul>
                     </nav>
