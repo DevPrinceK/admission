@@ -1,6 +1,5 @@
 from django.urls import path
 
-from administration.views import LoginView
 from .views import LoginView, SignUpView
 
 

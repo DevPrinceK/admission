@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 
     'administration',
     'applicant',
+    'accounts',
 ]
 
 MIDDLEWARE = [
