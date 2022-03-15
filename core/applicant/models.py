@@ -22,7 +22,7 @@ class Bio(models.Model):
     guardian = models.CharField(max_length=255)
     town = models.CharField(max_length=255)
 
-    fist_choice = models.CharField(max_length=255)
+    first_choice = models.CharField(max_length=255)
     second_choice = models.CharField(max_length=255)
 
     jhs = models.CharField(max_length=255)

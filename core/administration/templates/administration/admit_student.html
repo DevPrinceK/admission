@@ -1,0 +1,50 @@
+{% extends 'administration/base.html' %}
+{% block pagetitle %} Admit Student {% endblock %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="container col-10 mx-auto">
+        <!-- breadcrumb -->
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Admissions</a></li>
+                    <li class="breadcrumb-item"><a href="#">Applicant</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Admit Student</li>
+                </ol>
+            </nav>
+        </div>
+        <!-- end of breadcrumb -->
+
+        <!-- access control form -->
+        <div class="row">
+            <div class="col-md-8 col-lg-8 col-xl-7 card shadow mx-auto mt-2">
+                <div class="card-header">
+                    <h3 class="card-title">Student Admission</h3>
+                    <!-- <span class="bg p-1 bg-primary">{{user.get_name}}</span> -->
+                </div>
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-4 text-primary">Assign Course</h5>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <!-- <input type="hidden" name="index_number" value="{{user.id}}"> -->
+                        <div class="form-group">
+                            <select name="program" id="program" class="form-control">
+                                <option value="">General Arts</option>
+                                <option value="">Business</option>
+                                <option value="">General Science</option>
+                                <option value="">Visual Arts</option>
+                            </select>
+                        </div>
+                        <br>
+                        <button class="btn btn-main-primary btn-block" type="submit">Give Admission</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

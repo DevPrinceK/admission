@@ -14,10 +14,12 @@ class Programs(Enum):
     """
     Enum class for Programs
     """
-    GENERAL_ARTS = 1
-    GENERAL_SCIENCE = 2
-    BUSINESS = 3
-    VISUAL_ARTS = 4
-    TECHNICAL = 5
-    AGRIC_SCIENCE = 6
-    
+    GENERAL_ARTS = 'GENERAL ARTS'
+    GENERAL_SCIENCE = 'GENERAL SCIENCE'
+    BUSINESS = 'BUSINESS'
+    VISUAL_ARTS = 'VISUAL ARTS'
+    TECHNICAL = 'TECHNICAL'
+    AGRIC_SCIENCE = 'AGRIC SCIENCE'
+
+    def get_programs(self):
+        return list(map(str, self))
