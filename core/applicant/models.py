@@ -1,4 +1,4 @@
-from email.policy import default
+from time import time
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser
 
@@ -88,3 +88,16 @@ class Transaction(models.Model):
 
     def __str__(self):
         return self.transaction_id
+
+
+class Program(models.Model):
+    def generate_id(self):
+        prefix = str(self.name[:3].upper())
+        return prefix + str(time() * 1000)
+
+    name = models.CharField(max_length=255)
+    program_id = models.CharField(
+        max_length=255, unique=True, default=generate_id)
+
+    def __str__(self):
+        return self.name

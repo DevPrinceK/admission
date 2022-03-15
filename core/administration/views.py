@@ -42,6 +42,10 @@ class DashboardView(View):
         percentage_of_applicants_this_week = '0.00 %' if total_applicants == 0 else str(
             (applicants_this_week / total_applicants) * 100) + ' %'
 
+        total_visits = 0
+        for user in Applicant.objects.all():
+            total_visits += user.number_of_visits
+
         context = {
             'total_applicants': total_applicants,
             'total_transactions': total_transactions,
@@ -55,6 +59,7 @@ class DashboardView(View):
             'percentage_pending': percentage_pending,
             'percentage_admitted_this_week': percentage_admitted_this_week,
             'percentage_of_applicants_this_week': percentage_of_applicants_this_week,
+            'total_visits': total_visits
         }
         return render(request, self.template_name, context)
 
