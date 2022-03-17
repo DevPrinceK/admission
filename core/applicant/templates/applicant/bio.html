@@ -1,0 +1,144 @@
+{% extends 'applicant/base.html' %}
+{% block pagetitle %} Bio Data {% endblock %}
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="container col-10 mx-auto">
+        <!-- breadcrumb -->
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Application</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Bio Data</li>
+                </ol>
+            </nav>
+        </div>
+        <!-- end of breadcrumb -->
+
+        <!-- applicant registration form -->
+
+        <div class="row">
+            <div class="col-md-10 col-lg-10 col-xl-9 card shadow mx-auto mt-2">
+                <div class="card-header">
+                    <h3 class="card-title">Applicant Bio Data</h3>
+                </div>
+                <div class="card-body">
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="first_name">Firstname</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name"
+                                value="{{applicant.first_name}}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Lastname</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name"
+                                value="{{applicant.last_name}}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select name="gender" id="gender" class="form-control">
+                                {% if applicant.gender == 'M' %}
+                                <option value="M" selected>Male</option>
+                                <option value="F">Female</option>
+                                {% else %}
+                                <option value="M">Male</option>
+                                <option value="F" selected>Female</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="d_o_b">Date of Birth</label>
+                            <input type="date" class="form-control" name="d_o_b" id="d_o_b" value="{{applicant.d_o_b}}"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="text" name="phone" id="phone" class="form-control" value="{{applicant.phone}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                value="{{applicant.email}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" name="address"
+                                value="{{applicant.address}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="mother_name">Mother's Name</label>
+                            <input type="text" class="form-control" name="mother_name" id="mother_name"
+                                value="{{applicant.mother_name}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="father_name">Father's Name</label>
+                            <input type="text" class="form-control" name="father_name" id="father_name"
+                                value="{{applicant.father_name}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="guardian">Guardian</label>
+                            <input type="text" class="form-control" value="{{applicant.guardian}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="town">Town</label>
+                            <input type="text" class="form-control" id="town" name="town" value="{{applicant.town}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="logo">applicant Logo</label>
+                            <small class="text text-primary">
+                                {% if applicant.bece_results %}
+                                Currently:
+                                <a href="{{applicant.bece_results.url}}">
+                                    <img src="{{applicant.bece_results.url}}" height="40"></img>
+                                </a>
+                                {% endif %}
+                            </small>
+                            <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="first_choice">First Choice</label>
+                            <input type="text" class="form-control" name="first_choice" id="first_choice"
+                                value="{{applicant.first_choice}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="second_choice">Second Choice</label>
+                            <input type="text" class="form-control" name="second_choice" id="second_choice"
+                                value="{{applicant.second_choice}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="jhs">JHS Attended</label>
+                            <input type="text" class="form-control" name="jhs" id="jhs" value="{{applicant.jhs}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="year_of_completion">Year Of Completion (JHS)</label>
+                            <input type="date" class="form-control" name="year_of_completion" id="year_of_completion"
+                                value="{{applicant.year_of_completion|date:'Y-m-d'}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="bece_aggregate">BECE Aggregate (JHS)</label>
+                            <input type="number" class="form-control" name="bece_aggregate" id="bece_aggregate"
+                                value="{{applicant.bece_aggregate}}">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-block btn-outline-primary" value="Submit Bio Data">
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

@@ -2,13 +2,17 @@ from datetime import datetime, timedelta
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
+from django.utils.decorators import method_decorator
+
 from applicant.models import Applicant, Transaction
 from core.utils.constants import AdmissionStatus
+from core.utils.decorators import AdminOnly, ApplicantsOnly
 
 
 class DashboardView(View):
     template_name = 'administration/dashboard.html'
 
+    @method_decorator(AdminOnly)
     def get(self, request):
         total_applicants = Applicant.objects.filter(is_applicant=True).count()
         total_transactions = Transaction.objects.count()
@@ -67,11 +71,13 @@ class DashboardView(View):
 class AdmitStudentView(View):
     template_name = 'administration/admit_student.html'
 
+    @method_decorator(AdminOnly)
     def get(self, request, index_number, *args, **kwargs):
         context = {
         }
         return render(request, self.template_name, context)
 
+    @method_decorator(AdminOnly)
     def post(self, request, index_number, *args, **kwargs):
         student = Applicant.objects.filter(index_number=index_number).first()
         student.admission_status = AdmissionStatus.APPROVED.value
@@ -86,9 +92,11 @@ class AdmitStudentView(View):
 class AdmitAllApplicantsView(View):
     # template_name = 'administration/admit_all_applicants.html'
 
+    @method_decorator(AdminOnly)
     def get(self, request, *args, **kwargs):
         return redirect('administration:applicants')
 
+    @method_decorator(AdminOnly)
     def post(self, request, *args, **kwargs):
         applicants = Applicant.objects.filter(is_admitted=False)
         for applicant in applicants:
@@ -104,6 +112,7 @@ class AdmitAllApplicantsView(View):
 class AdmittedStudentView(View):
     template_name = "administration/admitted.html"
 
+    @method_decorator(AdminOnly)
     def get(self, request, *args, **kwargs):
         students = Applicant.objects.filter(
             is_admitted=True, admission_status=AdmissionStatus.APPROVED.value)
@@ -114,6 +123,7 @@ class AdmittedStudentView(View):
 class ApplicantListView(View):
     template_name = "administration/applicants.html"
 
+    @method_decorator(AdminOnly)
     def get(self, request, *args, **kwargs):
         applicants = Applicant.objects.filter(
             is_applicant=True).order_by('-date_created')
@@ -124,6 +134,7 @@ class ApplicantListView(View):
 class StudentDetailView(View):
     template_name = "administration/student_detail.html"
 
+    @method_decorator(AdminOnly)
     def get(self, request, *args, **kwargs):
         context = {}
         return render(request, self.template_name, context)
@@ -132,6 +143,7 @@ class StudentDetailView(View):
 class TransactionsView(View):
     template_name = 'administration/transactions.html'
 
+    @method_decorator(AdminOnly)
     def get(self, request, *args, **kwargs):
         transactions = Transaction.objects.all().order_by('-transaction_id')
         context = {'transactions': transactions}
@@ -141,10 +153,12 @@ class TransactionsView(View):
 class RegisterAdminUserView(View):
     template_name = 'administration/register_admin.html'
 
+    @method_decorator(AdminOnly)
     def get(self, request, *args, **kwargs):
         context = {}
         return render(request, self.template_name, context)
 
+    @method_decorator(AdminOnly)
     def post(self, request, *args, **kwargs):
         index_number = request.POST.get('index_number')
         password = request.POST.get('password')

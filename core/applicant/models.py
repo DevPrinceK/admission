@@ -13,15 +13,15 @@ class Bio(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     gender = models.CharField(max_length=10)
-    age = models.IntegerField(default=0)
+    d_o_b = models.DateField(null=True, blank=True)
     phone = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, null=True, blank=True)
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, null=True, blank=True)
 
-    mother_name = models.CharField(max_length=255)
-    father_name = models.CharField(max_length=255)
-    guardian = models.CharField(max_length=255)
-    town = models.CharField(max_length=255)
+    mother_name = models.CharField(max_length=255, null=True, blank=True)
+    father_name = models.CharField(max_length=255, null=True, blank=True)
+    guardian = models.CharField(max_length=255, null=True, blank=True)
+    town = models.CharField(max_length=255, null=True, blank=True)
 
     first_choice = models.CharField(max_length=255)
     second_choice = models.CharField(max_length=255)
@@ -72,8 +72,11 @@ class Applicant(AbstractBaseUser, PermissionsMixin):
 
 
 class Transaction(models.Model):
+    def generate_id(self):
+        return time() * 100000
 
-    transaction_id = models.CharField(max_length=25, unique=True)
+    transaction_id = models.CharField(
+        max_length=25, unique=True, default=generate_id)
     applicant = models.ForeignKey(
         Applicant, on_delete=models.CASCADE, related_name='payer')
     amount = models.IntegerField(default=0)

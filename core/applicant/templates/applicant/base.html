@@ -356,6 +356,10 @@
                                     </li>
                                     <li aria-haspopup="true"><a href="" class="slide-item">Prospectus</a>
                                     </li>
+                                    {% if request.user.is_admitted %}
+                                    <li aria-haspopup="true"><a href="" class="slide-item">Admission Letter</a>
+                                    </li>
+                                    {% endif %}
 
                                 </ul>
                             </li>
@@ -366,10 +370,7 @@
                                 </a>
                                 <ul class="sub-menu">
                                     <li aria-haspopup="true"><a href="{% url 'administration:admitted' %}"
-                                            class="slide-item">Admitted</a>
-                                    </li>
-                                    <li aria-haspopup="true"><a href="{% url 'administration:applicants' %}"
-                                            class="slide-item">Applicants</a>
+                                            class="slide-item">My Admission</a>
                                     </li>
                                 </ul>
                             </li>
