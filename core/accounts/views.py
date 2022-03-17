@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth import login, authenticate, logout
@@ -59,3 +60,27 @@ class LogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect('accounts:login')
+
+
+class Error404View(View):
+    template_name = 'accounts/404.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+
+class Error500View(View):
+    template_name = 'accounts/500.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        context = {}
+        return render(request, self.template_name, context)
