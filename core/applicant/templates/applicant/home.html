@@ -1,7 +1,79 @@
 {% extends 'applicant/base.html' %}
-{% load static %}
 {% block pagetitle %} Home {% endblock %}
+{% load static %}
 
 {% block content %}
 
-{% endblock %}
+<div class="row">
+    <div class="container col-10 mx-auto">
+        <!-- breadcrumb -->
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Application</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Welcome</li>
+                </ol>
+            </nav>
+        </div>
+        <!-- end of breadcrumb -->
+
+        <!-- business registration form -->
+        <div class="row">
+            <div class="col-md-10 col-lg-10 col-xl-9 card shadow mx-auto mt-2">
+                <div class="card-header">
+                    <!-- <h3 class="card-title">Processing Fee</h3> -->
+                </div>
+                <div class="card-body">
+                    <h5 class="fw-semibold mb-4 text-primary text-center">Welcome!</h5>
+                    <center class="mb-3">
+                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                            style="enable-background:new 0 0 50 50; height: 150; width: auto;" xml:space="preserve">
+                            <circle style="fill:#25AE88;" cx="25" cy="25" r="25" />
+                            <polyline
+                                style="fill:none;stroke:#FFFFFF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
+                                points="
+	38,15 22,33 12,25 " />
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                            <g>
+                            </g>
+                        </svg>
+                    </center>
+                    <a href="{% url 'applicant:bio_data' %}" class="btn btn-outline-primary btn-block">Upload Bio
+                        Data</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    {% endblock %}

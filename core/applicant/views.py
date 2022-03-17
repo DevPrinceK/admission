@@ -5,6 +5,7 @@ from django.contrib import messages
 from applicant.forms import BioForm
 from django.utils.decorators import method_decorator
 from core.utils.decorators import AdminOnly, ApplicantsOnly
+from administration.models import Admission
 
 
 class HomepageView(View):
@@ -70,3 +71,14 @@ class BioSubmittedView(View):
         index_number = request.user.index_number
         context = {'index_number': index_number}
         return render(request, template_name, context)
+
+
+class MyAdmissionView(View):
+    template_name = 'applicant/my_admission.html'
+
+    @method_decorator(ApplicantsOnly)
+    def get(self, request, *args, **kwargs):
+        admissions = Admission.objects.filter(
+            applicant=request.user, revoked=False)
+        context = {'admissions': admissions}
+        return render(request, self.template_name, context)

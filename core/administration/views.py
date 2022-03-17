@@ -8,6 +8,8 @@ from applicant.models import Applicant, Transaction
 from core.utils.constants import AdmissionStatus
 from core.utils.decorators import AdminOnly, ApplicantsOnly
 
+from .models import Admission
+
 
 class DashboardView(View):
     template_name = 'administration/dashboard.html'
@@ -84,6 +86,10 @@ class AdmitStudentView(View):
         student.is_admitted = True
         student.program_admitted_into = request.POST.get('program')
         student.save()
+        admission = Admission.objects.create(
+            applicant=student,
+            administrator=request.user,)
+        admission.save()
         messages.success(
             request, f'Student with Index {index_number} and name {student.bio.get_fullname}  admitted successfully')
         return redirect('administration:applicants')
@@ -104,6 +110,10 @@ class AdmitAllApplicantsView(View):
             applicant.is_admitted = True
             applicant.program_admitted_into = applicant.bio.first_choice
             applicant.save()
+            admission = Admission.objects.create(
+                applicant=applicant,
+                administrator=request.user,)
+            admission.save()
         messages.success(
             request, f'{applicants.count()} applicants admitted successfully')
         return redirect('administration:admitted')
