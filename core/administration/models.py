@@ -18,3 +18,10 @@ class Admission(models.Model):
 
     def __str__(self):
         return self.admission_number
+
+
+class Program(models.Model):
+    def generate_id():
+        return 'tsprog' + str(Program.objects.count())
+    program_code = models.CharField(max_length=10, default=generate_id)
+    name = models.CharField(max_length=100)
