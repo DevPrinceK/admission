@@ -1,11 +1,15 @@
+from email.mime import application
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 
 from applicant.forms import BioForm
 from django.utils.decorators import method_decorator
+from applicant.models import Applicant
 from core.utils.decorators import AdminOnly, ApplicantsOnly
 from administration.models import Admission
+from django.http import HttpResponse
+from core.utils.util_functions import html_to_pdf
 
 
 class HomepageView(View):
@@ -82,3 +86,27 @@ class MyAdmissionView(View):
             applicant=request.user, revoked=False)
         context = {'admissions': admissions}
         return render(request, self.template_name, context)
+
+
+class GeneratePDF(View):
+    template_name = 'applicant/admission_letter.html'
+
+    def get(self, request, *args, **kwargs):
+        html = self.template_name
+        admission = Admission.objects.filter(
+            applicant=request.user, revoked=False).first()
+        comtext = {
+            'user': request.user,
+            'admission': admission,
+        }
+        pdf = html_to_pdf(html, comtext)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = f'tashtech-admission-letter-{request.user.index_number}.pdf'
+            # content = f"inline; filename={filename}"
+            # download = request.GET.get("download")
+            # if download:
+            content = f"attachment; filename={filename}"
+            response['Content-Disposition'] = content
+            return response
+        return HttpResponse("Not found")

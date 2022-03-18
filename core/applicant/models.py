@@ -93,14 +93,31 @@ class Transaction(models.Model):
         return self.transaction_id
 
 
+# class Program(models.Model):
+
+#     def generate_id(self):
+#         prefix = str(self.name[:3].upper())
+#         return prefix + str(time() * 1000)
+
+#     name = models.CharField(max_length=255)
+#     program_id = models.CharField(
+#         max_length=255, unique=True, default=generate_id)
+
+#     def __str__(self):
+#         return self.name
+
+# NOTE: THOIS FUNCTION IS REDUNDANT
 class Program(models.Model):
-    def generate_id(self):
-        prefix = str(self.name[:3].upper())
-        return prefix + str(time() * 1000)
+    def generate_id():
+        return 'tsprog' + str(Program.objects.count())
+    name = models.CharField(max_length=100)
 
-    name = models.CharField(max_length=255)
-    program_id = models.CharField(
-        max_length=255, unique=True, default=generate_id)
+    # def generate_id():
+    #     number = Program.objects.count() + 1
+    #     prefix = str(Program.name[:3].upper())
+    #     if number < 10:
+    #         return prefix + '00' + str(number)
+    #     elif number < 100:
+    #         return prefix + '0' + str(number)
 
-    def __str__(self):
-        return self.name
+    program_code = models.CharField(max_length=10, default=generate_id)

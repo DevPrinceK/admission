@@ -8,7 +8,7 @@ from applicant.models import Applicant, Transaction
 from core.utils.constants import AdmissionStatus
 from core.utils.decorators import AdminOnly, ApplicantsOnly
 
-from .models import Admission
+from .models import Admission, Program
 
 
 class DashboardView(View):
@@ -29,6 +29,8 @@ class DashboardView(View):
             admission_status=AdmissionStatus.REJECTED.value).count()
         total_pending = Applicant.objects.filter(
             is_applicant=True, admission_status=AdmissionStatus.PENDING.value).count()
+
+        total_programs = Program.objects.count()
 
         percentage_rejected = '0.00 %' if total_applicants == 0 else str(
             (total_rejected / total_applicants) * 100) + ' %'
@@ -65,7 +67,8 @@ class DashboardView(View):
             'percentage_pending': percentage_pending,
             'percentage_admitted_this_week': percentage_admitted_this_week,
             'percentage_of_applicants_this_week': percentage_of_applicants_this_week,
-            'total_visits': total_visits
+            'total_visits': total_visits,
+            'total_programs': total_programs
         }
         return render(request, self.template_name, context)
 
@@ -75,7 +78,11 @@ class AdmitStudentView(View):
 
     @method_decorator(AdminOnly)
     def get(self, request, index_number, *args, **kwargs):
+        applicant = Applicant.objects.filter(index_number=index_number).first()
+        programs = Program.objects.all().order_by('program_id')
         context = {
+            'applicant': applicant,
+            'programs': programs,
         }
         return render(request, self.template_name, context)
 

@@ -22,6 +22,7 @@
                 <div class="card-body">
                     <!-- search form -->
                     <form action="">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="col-10">
                                 <input type="text" class="form-control" name="search_user" id="search_user"
@@ -35,6 +36,7 @@
                     <!-- end of search form -->
                     <!-- admision form -->
                     <form action="{% url 'administration:admit_all_applicants' %}" method="POST" class="mt-2">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="col-12">
                                 <button type="submit" class="btn btn-outline-primary btn-block">Admit All

@@ -32,10 +32,15 @@
                         <!-- <input type="hidden" name="index_number" value="{{user.id}}"> -->
                         <div class="form-group">
                             <select name="program" id="program" class="form-control">
+                                {% if programs %}
+                                {% for program in programs %}
+                                <option value="{{program.id}}">{{program.name}}</option>
+                                {% endfor %}
                                 <option value="">General Arts</option>
                                 <option value="">Business</option>
                                 <option value="">General Science</option>
                                 <option value="">Visual Arts</option>
+                                {% endif %}
                             </select>
                         </div>
                         <br>

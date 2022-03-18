@@ -357,7 +357,8 @@
                                     <li aria-haspopup="true"><a href="" class="slide-item">Prospectus</a>
                                     </li>
                                     {% if request.user.is_admitted %}
-                                    <li aria-haspopup="true"><a href="" class="slide-item">Admission Letter</a>
+                                    <li aria-haspopup="true"><a href="{% url 'applicant:download_admission_letter' %}"
+                                            class="slide-item">Admission Letter</a>
                                     </li>
                                     {% endif %}
 
