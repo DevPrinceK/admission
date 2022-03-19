@@ -1,15 +1,20 @@
+from django.db.models import Q
+import uuid
+import time
 from email.mime import application
+from uuid import uuid4
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 
 from applicant.forms import BioForm
 from django.utils.decorators import method_decorator
-from applicant.models import Applicant
+from applicant.models import Applicant, Transaction
 from core.utils.decorators import AdminOnly, ApplicantsOnly
 from administration.models import Admission
 from django.http import HttpResponse
-from core.utils.util_functions import html_to_pdf
+from core.utils.util_functions import html_to_pdf, make_payment, get_transaction_status
+from core import settings
 
 
 class HomepageView(View):
@@ -48,6 +53,17 @@ class BioDataView(View):
             return redirect('applicant:bio_data')
 
 
+def generate_id():
+    return int(time.time() * 1000)
+
+
+# generate a uuid for the transaction
+
+
+def generate_transaction_id():
+    return str(uuid.uuid4())
+
+
 class PaymentView(View):
     template_name = 'applicant/payment.html'
 
@@ -58,7 +74,44 @@ class PaymentView(View):
 
     @method_decorator(ApplicantsOnly)
     def post(self, request, *args, **kwargs):
-        return redirect('applicant:submitted_payment')
+        print('the payment is being processed')
+        user = request.user
+        phone = request.POST.get('phone')
+        amount = request.POST.get('amount')
+        network = request.POST.get('network')
+        note = request.POST.get('note')
+        transaction_id = generate_transaction_id()
+
+        data = {
+            'transaction_id': transaction_id,
+            'mobile_number': phone,
+            'amount': amount,
+            'wallet_id': settings.WALLET_ID,
+            'network_code': network,
+            'note': note,
+        }
+        response = make_payment(data)
+        # wait for 40 seconds for transaction to be processed
+        for i in range(4):
+            time.sleep(10)
+            transaction_status = get_transaction_status(transaction_id)
+            if transaction_status['success'] == True:
+                print('the transaction was successful')
+                user.has_paid = True
+                break
+
+        transaction = {
+            'transaction_id': transaction_id,
+            'amount': amount,
+            'phone': phone,
+            'network': network,
+            'note': note,
+            'status_code': transaction_status['status_code'],
+            'status_message': transaction_status['message'],
+            'applicant': user,
+        }
+        Transaction.objects.create(**transaction)
+        return redirect('applicant:transactions')
 
 
 class BioSubmittedView(View):
@@ -103,10 +156,51 @@ class GeneratePDF(View):
         if pdf:
             response = HttpResponse(pdf, content_type='application/pdf')
             filename = f'tashtech-admission-letter-{request.user.index_number}.pdf'
-            # content = f"inline; filename={filename}"
-            # download = request.GET.get("download")
-            # if download:
             content = f"attachment; filename={filename}"
             response['Content-Disposition'] = content
             return response
         return HttpResponse("Not found")
+
+
+class TransactionView(View):
+    template_name = 'applicant/transactions.html'
+
+    def get(self, request, *args, **kwargs):
+        # transactions = request.user.transactions.all()
+        transactions = Transaction.objects.filter(
+            applicant=request.user).order_by('-date_created')
+        context = {'transactions': transactions}
+        return render(request, self.template_name, context)
+
+
+class RecheckTransactionStatusView(View):
+    template_name = 'applicant/recheck_status.html'
+
+    def get(self, request, transaction_id, *args, **kwargs):
+        transaction = Transaction.objects.get(transaction_id=transaction_id)
+        response = get_transaction_status(transaction.transaction_id)
+        transaction.status_code = response['status_code']
+        transaction.status_message = response['message']
+        messages.info(
+            request, f'Rechecked status of transaction {transaction.transaction_id}! Updated status is {transaction.status_message}')
+        return redirect('applicant:transactions')
+
+
+class SearchTransactionView(View):
+    template_name = 'applicant/transactions.html'
+
+    def get(self, request, *args, **kwargs):
+        query = request.GET.get('query')
+        if query:
+            transactions = Transaction.objects.filter(
+                Q(transaction_id__icontains=query) |
+                Q(phone__icontains=query) |
+                Q(note__icontains=query) |
+                Q(status_message__icontains=query) |
+                Q(status_code__icontains=query)
+            )
+        else:
+            transactions = Transaction.objects.filter(
+                applicant=request.user).order_by('-date_created')
+        context = {'transactions': transactions}
+        return render(request, self.template_name, context)

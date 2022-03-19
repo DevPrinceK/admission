@@ -57,6 +57,7 @@ class Applicant(AbstractBaseUser, PermissionsMixin):
         max_length=255, null=True, blank=True)
 
     number_of_visits = models.IntegerField(default=0)
+    has_paid = models.BooleanField(default=False)
 
     date_created = models.DateTimeField(auto_now_add=True)
     date_admitted = models.DateTimeField(null=True, blank=True)
@@ -72,14 +73,14 @@ class Applicant(AbstractBaseUser, PermissionsMixin):
 
 
 class Transaction(models.Model):
-    def generate_id(self):
-        return time() * 100000
+    def generate_id():
+        return round(time() * 1000)
 
     transaction_id = models.CharField(
         max_length=25, unique=True, default=generate_id)
     applicant = models.ForeignKey(
         Applicant, on_delete=models.CASCADE, related_name='payer')
-    amount = models.IntegerField(default=0)
+    amount = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     network = models.CharField(max_length=15)
     note = models.CharField(max_length=255, null=True, blank=True)
     phone = models.CharField(max_length=15)
@@ -93,31 +94,13 @@ class Transaction(models.Model):
         return self.transaction_id
 
 
-# class Program(models.Model):
-
-#     def generate_id(self):
-#         prefix = str(self.name[:3].upper())
-#         return prefix + str(time() * 1000)
-
-#     name = models.CharField(max_length=255)
-#     program_id = models.CharField(
-#         max_length=255, unique=True, default=generate_id)
-
-#     def __str__(self):
-#         return self.name
-
-# NOTE: THOIS FUNCTION IS REDUNDANT
+# NOTE: THIS FUNCTION IS REDUNDANT
 class Program(models.Model):
     def generate_id():
         return 'tsprog' + str(Program.objects.count())
     name = models.CharField(max_length=100)
 
-    # def generate_id():
-    #     number = Program.objects.count() + 1
-    #     prefix = str(Program.name[:3].upper())
-    #     if number < 10:
-    #         return prefix + '00' + str(number)
-    #     elif number < 100:
-    #         return prefix + '0' + str(number)
-
     program_code = models.CharField(max_length=10, default=generate_id)
+
+    def __str__(self):
+        return self.name

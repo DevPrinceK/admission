@@ -18,4 +18,5 @@ urlpatterns = [
     path('applicants/', ApplicantListView.as_view(), name='applicants'),
     path('detail/<str:index_nuber>/', StudentDetailView.as_view(), name='student'),
     path('transactions/', TransactionsView.as_view(), name='transactions'),
+
 ]

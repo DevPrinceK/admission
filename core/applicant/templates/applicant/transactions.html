@@ -1,5 +1,5 @@
-{% extends 'administration/base.html' %}
-{% block pagetitle %} Applicants {% endblock %}
+{% extends 'applicant/base.html' %}
+{% block pagetitle %} Payments {% endblock %}
 {% load static %}
 {% block content %}
 <div class="row">
@@ -9,8 +9,8 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Admissions</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Applicants</li>
+                    <li class="breadcrumb-item"><a href="#">Applicantion</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Payments</li>
                 </ol>
             </nav>
         </div>
@@ -20,13 +20,15 @@
             <div class="col-md-12 col-lg-12 col-xl-10 card shadow mx-auto mt-2">
 
                 <div class="card-body">
+                    <p class="card-text">Transaction Wasn't Successful?<a href="{% url 'applicant:payment' %}"> Make
+                            Payment</a></p>
                     <!-- search form -->
                     <form action="" method="GET">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-10">
                                 <input type="text" class="form-control" name="query" id="query"
-                                    placeholder="Name of Student, Phone, Email etc...">
+                                    placeholder="Transaction ID, Phone, etc">
                             </div>
                             <div class="col-2">
                                 <button type="submit" class="btn btn-primary">Search</button>
@@ -34,21 +36,8 @@
                         </div>
                     </form>
                     <!-- end of search form -->
-                    <!-- admision form -->
-                    <form action="{% url 'administration:admit_all_applicants' %}" method="POST" class="mt-2">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-outline-primary btn-block">Admit All
-                                    Applicants</button>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- end of search form -->
 
-
-
-                    <!-- business list table: table responsive -->
+                    <!--transaction list table-->
                     <div class="table-responsive mt-2">
                         <table class="table table-striped table-hover" id="table_id">
                             <thead class="thead thead-dark pt-2">
@@ -57,24 +46,32 @@
                                         <h5>#</h5>
                                     </th>
                                     <th scope="col">
-                                        <h5>Fullname</h5>
+                                        <h5>Transaction ID</h5>
                                     </th>
                                     <th scope="col">
-                                        <h5>Sex</h5>
+                                        <h5>Payee</h5>
+                                    </th>
+                                    <th scope="col">
+                                        <h5>Amount</h5>
+                                    </th>
+                                    <th scope="col">
+                                        <h5>Network</h5>
                                     </th>
                                     <th scope="col">
                                         <h5>Phone</h5>
                                     </th>
-                                    <th scope="col">
-                                        <h5>Email</h5>
-                                    </th>
 
                                     <th scope="col">
-                                        <h5>Admission Status</h5>
+                                        <h5>Status Code</h5>
                                     </th>
-
                                     <th>
-                                        <h5>Programme</h5>
+                                        <h5>Status Message</h5>
+                                    </th>
+                                    <th>
+                                        <h5>Date Created</h5>
+                                    </th>
+                                    <th>
+                                        <h5>Date Modified</h5>
                                     </th>
 
                                     <th scope="col">
@@ -83,60 +80,64 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% if applicants %}
-                                {% for student in applicants %}
+                                {% if transactions %}
+                                {% for transaction in transactions %}
                                 <tr>
                                     <th scope="row">
                                         {{forloop.counter}}
                                     </th>
 
                                     <td>
-                                        {{student.get_fullname}}
+                                        {{transaction.transaction_id}}
                                     </td>
                                     <td>
-                                        {{student.gender}}
+                                        {{transaction.applicant.bio.get_fullname}}
                                     </td>
                                     <td>
-                                        {{student.phone}}
+                                        {{transaction.amount}}
                                     </td>
                                     <td>
-                                        {{student.email}}
+                                        {{transaction.network}}
                                     </td>
                                     <td>
-                                        {% if student.is_admitted %}
-                                        <a href="javascript:void(0)" class="btn btn-success btn-sm">Admitted</a>
+                                        {{transaction.phone}}
+                                    </td>
+                                    <td>
+                                        {{transaction.status_code}}
+                                    </td>
+                                    <td>
+                                        {% if transaction.status_code == '000' %}
+                                        <a href="javascript:void(0)" class="btn btn-success btn-sm">Successful</a>
+                                        {% elif transaction.status_code == '100' %}
+                                        <a href="javascript:void(0)" class="btn btn-secondary btn-sm">Pending</a>
                                         {% else %}
-                                        <a href="javascript:void(0)" class="btn btn-danger btn-sm">Pending</a>
+                                        <a href="javascript:void(0)" class="btn btn-danger btn-sm">Failed</a>
                                         {% endif %}
                                     </td>
                                     <td>
-                                        {% if student.is_admitted %}
-                                        {{student.program_admitted_into}}
-                                        {% else %}
-                                        {{student.first_choice}}
-                                        {{student.second_choice}}
-                                        {% endif %}
+                                        {{transaction.date_created}}
+                                    </td>
+                                    <td>
+                                        {{admission.date_modified}}
                                     </td>
                                     <td>
                                         <div class="d-flex flex-row justify-content-center">
-                                            <a href="" class="btn btn-sm btn-primary btn-sm m-1">View</a>
-                                            <a href="" class="btn btn-success btn-sm m-1">Edit</a>
-                                            <a href="" class="btn btn-danger btn-sm m-1">Delete</a>
+                                            <a href="" class="btn btn-primary btn-sm mr-2">Recheck</a>
                                         </div>
                                     </td>
                                 </tr>
                                 {% endfor %}
                                 {% else %}
                                 <tr>
-                                    <td colspan="8" class="text-center">
-                                        <h5>No Applicant Found!</h5>
+                                    <td colspan="12" class="text-center">
+                                        <h5>No Transaction Found!</h5>
                                     </td>
                                 </tr>
                                 {% endif %}
                             </tbody>
                         </table>
                     </div>
-                    <!-- end of applicant list table -->
+                    <!-- end of admitted student list table -->
                 </div>
             </div>
 

@@ -21,10 +21,11 @@
 
                 <div class="card-body">
                     <!-- search form -->
-                    <form action="">
+                    <form action="" method="GET">
+                        {% csrf_token %}
                         <div class="row">
                             <div class="col-10">
-                                <input type="text" class="form-control" name="search_user" id="search_user"
+                                <input type="text" class="form-control" name="query" id="query"
                                     placeholder="Transaction ID, Phone, Status etc...">
                             </div>
                             <div class="col-2">
@@ -76,10 +77,9 @@
                                     <td>{{forloop.counter}}</td>
                                     <td> <a href="javascript:void(0)">{{transaction.transaction_id}}</a>
                                     </td>
-                                    <td><span class="badge badge-info p-1">{{transaction.applicant.index_number}}</span>
+                                    <td>{{transaction.applicant}}
                                     </td>
-                                    <td><span
-                                            class="badge badge-primary p-1">{{transaction.applicant.get_fullname}}</span>
+                                    <td>{{transaction.applicant.bio.get_fullname}}
                                     </td>
                                     <td>{{transaction.amount}}</td>
                                     <td>{{transaction.network}}</td>
@@ -89,7 +89,7 @@
                                     <td>
                                         {% if transaction.status_code == '000' %} <span
                                             class="p-1 badge bg-success">Successful</span>
-                                        {% elif transaction.status_code == '107'%}
+                                        {% elif transaction.status_code == '004'%}
                                         <span class="p-1 badge bg-danger">Failed</span>
                                         {% else %}
                                         <span class="p-1 badge bg-warning">Pending</span>

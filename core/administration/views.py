@@ -1,3 +1,4 @@
+from django.db.models import Q
 from datetime import datetime, timedelta
 from django.shortcuts import render, redirect
 from django.views import View
@@ -142,8 +143,29 @@ class ApplicantListView(View):
 
     @method_decorator(AdminOnly)
     def get(self, request, *args, **kwargs):
-        applicants = Applicant.objects.filter(
-            is_applicant=True).order_by('-date_created')
+        query = request.GET.get('query')
+        if query:
+            applicants = Transaction.objects.filter(
+                Q(index_number__icontains=query) |
+                Q(bio__get_fullname__icontains=query) |
+                Q(bio__phone__icontains=query) |
+                Q(bio__email__icontains=query) |
+                Q(bio__address__icontains=query) |
+                Q(bio__father_name__icontains=query) |
+                Q(bio__mother_name__icontains=query) |
+                Q(bio__guardian__icontains=query) |
+                Q(bio__town__icontains=query) |
+                Q(bio__first_choice__icontains=query) |
+                Q(bio__second_choice__icontains=query) |
+                Q(bio__jhs__icontains=query) |
+                Q(bio__bece_aggregate__icontains=query) |
+                Q(program_admitted_into__icontains=query) |
+                Q(admission_status__icontains=query) |
+                Q(status_code__icontains=query)
+            )
+        else:
+            applicants = Applicant.objects.filter(
+                is_applicant=True).order_by('-date_created')
         context = {'applicants': applicants}
         return render(request, self.template_name, context)
 
@@ -162,7 +184,17 @@ class TransactionsView(View):
 
     @method_decorator(AdminOnly)
     def get(self, request, *args, **kwargs):
-        transactions = Transaction.objects.all().order_by('-transaction_id')
+        query = request.GET.get('query')
+        if query:
+            transactions = Transaction.objects.filter(
+                Q(transaction_id__icontains=query) |
+                Q(phone__icontains=query) |
+                Q(note__icontains=query) |
+                Q(status_message__icontains=query) |
+                Q(status_code__icontains=query)
+            )
+        else:
+            transactions = Transaction.objects.All().order_by('-date_created')
         context = {'transactions': transactions}
         return render(request, self.template_name, context)
 
@@ -186,7 +218,7 @@ class RegisterAdminUserView(View):
             messages.error(
                 request, f'Index number {index_number} already exists')
             return redirect('administration:register_admin')
-        #  if password and confirmatin password do not match
+        #  if password and confirmation password do not match
         if password != confirm_password:
             messages.error(
                 request, 'Password and Confirm Password do not match')
